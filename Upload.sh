@@ -32,7 +32,7 @@ EOF
     echo "  2. en_UK     6. es_ES     10. pt_PT"
     echo "  3. de_DE     7. fi_FI     11. tr_TR"
     echo "  4. fr_FR     8. cz_CZ     12. it_IT"
-    echo "              13. sv_SE     14. Main"
+    echo "  13. sv_SE                 99. Main"
     echo "------------------------------------------"
     echo "Choose your local :"
     read loc
@@ -76,14 +76,24 @@ EOF
         13)
         locale=sv_SE
         ;;
-        14)
+        99)
         ./Upload.sh
         ;;
         *)
         Set_lang
-        ;;
+        
     esac
+    
+    pio lib install &> /dev/null
 
+    echo "Removing Keyboard.cpp"
+    rm .pio/libdeps/micro/Keyboard/src/Keyboard.cpp
+    sleep 1
+
+    echo "Generate locale"
+    cat keymap/Keyboard1.cpp keymap/$locale.lang keymap/Keyboard2.cpp >> .pio/libdeps/micro/Keyboard/src/Keyboard.cpp
+    sleep 1
+    ./Upload.sh
 }
 
 build() #Build only and check error
