@@ -84,14 +84,15 @@ EOF
         
     esac
     
-    pio lib install &> /dev/null
-
     echo "Removing Keyboard.cpp"
     rm .pio/libdeps/micro/Keyboard/src/Keyboard.cpp
     sleep 1
 
     echo "Generate locale"
-    cat keymap/Keyboard1.cpp keymap/$locale.lang keymap/Keyboard2.cpp >> .pio/libdeps/micro/Keyboard/src/Keyboard.cpp
+    cat keymap/Keyboard1.cpp >> .pio/libdeps/micro/Keyboard/src/Keyboard.cpp
+    cat keymap/$locale.lang >> .pio/libdeps/micro/Keyboard/src/Keyboard.cpp
+    cat keymap/Keyboard2.cpp >> .pio/libdeps/micro/Keyboard/src/Keyboard.cpp
+
     sleep 1
     ./Upload.sh
 }
@@ -108,6 +109,7 @@ EOF
     echo 
     sleep 2
     pio run
+    ./Upload.sh
 }
 
 upload() #Upload the firmware on the card
